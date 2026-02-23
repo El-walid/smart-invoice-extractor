@@ -8,8 +8,8 @@ app = FastAPI()
 # Create the web endpoint
 @app.get("/extract")
 def extract_invoice():
-    # 1. Open the English PDF
-    with pdfplumber.open("dummy_invoice_en.pdf") as pdf:
+    # 1. Open the PDF
+    with pdfplumber.open("dummy_invoice.pdf") as pdf:
         first_page = pdf.pages[0]
         raw_text = first_page.extract_text()
 
