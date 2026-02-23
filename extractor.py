@@ -1,37 +1,34 @@
 import pdfplumber
 import re
+from fastapi import FastAPI
 
-# 1. We tell pdfplumber to open our file
-with pdfplumber.open("dummy_invoice.pdf") as pdf:
-    
-    # 2. We grab the very first page of the document (Index 0)
-    first_page = pdf.pages[0]
-    
-    # 3. We command it to extract all the text it sees into a single string
-    raw_text = first_page.extract_text()
+# Initialize the API
+app = FastAPI()
 
-    print("------- ANALYSE DE LA FACTURE -------")
+# Create the web endpoint
+@app.get("/extract")
+def extract_invoice():
+    # 1. Open the English PDF
+    with pdfplumber.open("dummy_invoice_en.pdf") as pdf:
+        first_page = pdf.pages[0]
+        raw_text = first_page.extract_text()
 
-    # 2. REGEX MAGIC: Find the Invoice Number
-    # \S+ means "grab all characters until the next space"
-    match_facture = re.search(r'Facture N°:\s*(\S+)',raw_text)
+    # 2. Extract Variables
+    match_invoice = re.search(r'Invoice No:\s*(\S+)', raw_text)
+    invoice_num = match_invoice.group(1) if match_invoice else "Not found"
 
-    if match_facture:
-        num_facture = match_facture.group(1) # .group(1) pulls out the exact match
-        print(f"📄 Numéro de Facture : {num_facture}")
+    match_total = re.search(r"Total Amount :\s*(\d+)\s*DH", raw_text)
+    total_amount = match_total.group(1) if match_total else "Not found"
 
-    # 3. REGEX MAGIC: Find the Total Amount
-    # \d+ means "grab all the digits (numbers)"
+    match_year = re.search(r"Date:.*(\d{4})", raw_text)
+    year = match_year.group(1) if match_year else "Not found"
 
-    match_total = re.search(r"Total TTC :\s*(\d+)\s*DH",raw_text)
-    
-    if match_total:
-        montant_total = match_total.group(1)
-        print(f"💰 Montant Total TTC : {montant_total} DH")
+    # 3. Package into the JSON Dictionary
+    invoice_data = {
+        "invoice_number": invoice_num,
+        "total_amount_dh": total_amount,
+        "delivery_year": year
+    }
 
-
-    match_year = re.search(r"Date:.*(\d{4})\s*",raw_text)
-
-    if match_year:
-        year = match_year.group(1)
-        print(f"🗓️  Delivery year : {year}")
+    # API returns the JSON directly
+    return invoice_data
