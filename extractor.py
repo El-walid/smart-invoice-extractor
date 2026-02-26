@@ -1,19 +1,24 @@
 import pdfplumber
 import re
-from fastapi import FastAPI
+import io
+from fastapi import FastAPI , File, UploadFile
 
 # Initialize the API
 app = FastAPI()
 
 # Create the web endpoint
-@app.get("/extract")
-def extract_invoice():
-    # 1. Open the PDF
-    with pdfplumber.open("dummy_invoice.pdf") as pdf:
+@app.post("/extract")
+async def extract_invoice(File : UploadFile = File (...)):
+
+    #1. Read the File
+    file_bytes = await File.read()
+
+    #2. Open the PDF from memory
+    with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
         first_page = pdf.pages[0]
         raw_text = first_page.extract_text()
 
-    # 2. Extract Variables
+    #3. Extract Variables
     match_invoice = re.search(r'Invoice No:\s*(\S+)', raw_text)
     invoice_num = match_invoice.group(1) if match_invoice else "Not found"
 
@@ -23,7 +28,7 @@ def extract_invoice():
     match_year = re.search(r"Date:.*(\d{4})", raw_text)
     year = match_year.group(1) if match_year else "Not found"
 
-    # 3. Package into the JSON Dictionary
+    #4. Package into the JSON Dictionary
     invoice_data = {
         "invoice_number": invoice_num,
         "total_amount_dh": total_amount,
