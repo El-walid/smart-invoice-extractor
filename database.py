@@ -45,3 +45,19 @@ class Invoice_Item(Base):
     product_id = Column(Integer, ForeignKey("Products.id"), nullable=False)
     product = relationship("Product")
     quantity = Column(Integer, default=0)
+
+
+
+
+from sqlalchemy.orm import sessionmaker
+
+# 1. Add your actual Azure connection string here
+DATABASE_URL = "mssql+pyodbc://YOUR_USERNAME:YOUR_PASSWORD@YOUR_SERVER_NAME.database.windows.net/invoice-db?driver=ODBC+Driver+18+for+SQL+Server"
+
+engine = create_engine(DATABASE_URL)
+
+# 2. Tell the construction crew to build the tables in Azure
+Base.metadata.create_all(engine)
+
+# 3. Create the session factory
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
