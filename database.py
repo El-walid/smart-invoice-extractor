@@ -1,6 +1,12 @@
 from sqlalchemy import create_engine, Float, String, Column, Date, Integer, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
+
+# This physically reads the .env file and loads its contents into memory
+load_dotenv()
 Base = declarative_base()
 
 # We will put the connection string here later!
@@ -47,12 +53,9 @@ class Invoice_Item(Base):
     quantity = Column(Integer, default=0)
 
 
-
-
-from sqlalchemy.orm import sessionmaker
-
+#CONNECTION TO DATABASE
 # 1. Add your actual Azure connection string here
-DATABASE_URL = "mssql+pyodbc://YOUR_USERNAME:YOUR_PASSWORD@YOUR_SERVER_NAME.database.windows.net/invoice-db?driver=ODBC+Driver+18+for+SQL+Server"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 
