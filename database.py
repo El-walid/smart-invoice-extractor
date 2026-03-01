@@ -18,6 +18,7 @@ class Client(Base):
 
     # The ID column must be set as the primary key
     id = Column(Integer, primary_key=True,autoincrement=True)
+    
     company_name = Column(String(100),nullable=False)
     address = Column(String(100), nullable=False)
     ice_number = Column(String(100), unique=True,nullable=False)
@@ -51,16 +52,21 @@ class Invoice_Item(Base):
     product_id = Column(Integer, ForeignKey("Products.id"), nullable=False)
     product = relationship("Product")
     quantity = Column(Integer, default=0)
+    
+# --- CONNECTION TO DATABASE ---
 
-
-#CONNECTION TO DATABASE
-# 1. Add your actual Azure connection string here
+# 1. Safely pull and clean the URL
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if DATABASE_URL:
+    # Remove any surrounding quotes or hidden Windows line endings (\r)
+    DATABASE_URL = DATABASE_URL.strip().strip('"').strip("'")
+else:
+    raise ValueError("DATABASE_URL not found. Check your .env file and Docker run command.")
+
+# 2. Create the engine
 engine = create_engine(DATABASE_URL)
 
-# 2. Tell the construction crew to build the tables in Azure
+# 3. Build tables and session
 Base.metadata.create_all(engine)
-
-# 3. Create the session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
