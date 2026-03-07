@@ -3,6 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
+from logger import logger  # <-- NEW IMPORT
 
 
 # This physically reads the .env file and loads its contents into memory
@@ -55,18 +56,20 @@ class Invoice_Item(Base):
     
 # --- CONNECTION TO DATABASE ---
 
-# 1. Safely pull and clean the URL
-DATABASE_URL = os.getenv("DATABASE_URL")
+try:
+    raw_url = os.getenv("DATABASE_URL")
+    if not raw_url:
+        logger.error("DATABASE_URL not found in .env file.") # <-- NEW LOG
+        raise ValueError("DATABASE_URL is missing.")
 
-if DATABASE_URL:
-    # Remove any surrounding quotes or hidden Windows line endings (\r)
-    DATABASE_URL = DATABASE_URL.strip().strip('"').strip("'")
-else:
-    raise ValueError("DATABASE_URL not found. Check your .env file and Docker run command.")
+    DATABASE_URL = raw_url.strip().strip('"').strip("'")
+    
+    engine = create_engine(DATABASE_URL)
+    logger.info("Successfully connected to Azure SQL Database.") # <-- NEW LOG
 
-# 2. Create the engine
-engine = create_engine(DATABASE_URL)
+    Base.metadata.create_all(engine)
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 3. Build tables and session
-Base.metadata.create_all(engine)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+except Exception as e:
+    logger.critical(f"Failed to connect to Database: {e}") # <-- NEW LOG
+    raise e
