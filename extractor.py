@@ -5,6 +5,7 @@ from datetime import datetime
 from fastapi import FastAPI, File, UploadFile
 from sqlalchemy.orm import Session
 from database import SessionLocal, Client, Product, Invoice, Invoice_Item
+from logger import logger  # <--- NEW IMPORT
 
 app = FastAPI()
 
@@ -19,28 +20,37 @@ def parse_date(date_str):
 
 @app.post("/extract_and_save")
 async def extract_invoice(file: UploadFile = File(...)):
+    # --- LOGGING STEP 1: Record the incoming request ---
+    logger.info(f"Received file upload: {file.filename}")
+
     # 1. READ THE UPLOADED PDF
-    file_bytes = await file.read()
-    with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
-        first_page = pdf.pages[0]
-        raw_text = first_page.extract_text()
-        table_data = first_page.extract_table()
+    try:
+        file_bytes = await file.read()
+        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+            first_page = pdf.pages[0]
+            raw_text = first_page.extract_text()
+            table_data = first_page.extract_table()
 
-    # 2. EXTRACT HEADER DATA (REGEX)
-    # Using group(1) to pull the exact match from the parentheses
-    invoice_num = re.search(r"INVOICE:\s*(#\S+)", raw_text).group(1)
-    ice_num = re.search(r"ICE:\s*(\d+)", raw_text).group(1)
-    date_str = re.search(r"Date:\s*([A-Za-z]+\s\d{1,2},\s\d{4})", raw_text).group(1)
-    
-    # Grab the string right after "Billed To:"
-    client_match = re.search(r"Billed To:\s*\n?(.*?)\n", raw_text)
-    client_name = client_match.group(1).strip() if client_match else "Unknown Client"
+        # 2. EXTRACT HEADER DATA (REGEX)
+        # Using group(1) to pull the exact match from the parentheses
+        invoice_num = re.search(r"INVOICE:\s*(#\S+)", raw_text).group(1)
+        ice_num = re.search(r"ICE:\s*(\d+)", raw_text).group(1)
+        date_str = re.search(r"Date:\s*([A-Za-z]+\s\d{1,2},\s\d{4})", raw_text).group(1)
+        
+        # Grab the string right after "Billed To:"
+        client_match = re.search(r"Billed To:\s*\n?(.*?)\n", raw_text)
+        client_name = client_match.group(1).strip() if client_match else "Unknown Client"
 
-    # Grab the total, remove the comma, convert to float
-    total_ttc_str = re.search(r"Total Amount Payable \(TTC\):\s*([\d,]+)", raw_text).group(1)
-    total_ttc = float(total_ttc_str.replace(",", ""))
-    
-    invoice_date = parse_date(date_str)
+        # Grab the total, remove the comma, convert to float
+        total_ttc_str = re.search(r"Total Amount Payable \(TTC\):\s*([\d,]+)", raw_text).group(1)
+        total_ttc = float(total_ttc_str.replace(",", ""))
+        
+        invoice_date = parse_date(date_str)
+
+    except Exception as e:
+        # If the PDF is unreadable or Regex fails before we even touch the DB
+        logger.error(f"Failed to extract text/regex from {file.filename}: {e}")
+        return {"error": f"Invalid PDF format: {str(e)}"}
 
     # 3. OPEN THE DATABASE CONNECTION
     db: Session = SessionLocal()
@@ -91,6 +101,9 @@ async def extract_invoice(file: UploadFile = File(...)):
         # --- PHASE D: COMMIT EVERYTHING ---
         # If no errors happened, lock all the changes into Azure SQL permanently
         db.commit()
+
+        # --- LOGGING STEP 2: Record success ---
+        logger.info(f"Successfully processed Invoice #{new_invoice.invoice_number} for client {client.company_name}")
         
         return {
             "status": "Success! Database Updated.",
@@ -101,7 +114,10 @@ async def extract_invoice(file: UploadFile = File(...)):
         }
         
     except Exception as e:
-        # If ANYTHING fails (Regex crash, bad data), rollback so we don't save half an invoice
+        # --- LOGGING STEP 3: Record failure ---
+        logger.error(f"Failed to process {file.filename}: {str(e)}")
+        
+        # If ANYTHING fails, rollback so we don't save half an invoice
         db.rollback()
         return {"error": f"Failed to process: {str(e)}"}
     finally:
