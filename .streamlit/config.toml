@@ -1,0 +1,15 @@
+[theme]
+# The emerald green from your design
+primaryColor = "#10b981"
+
+# The deep dark navy background
+backgroundColor = "#0f172a"
+
+# The slightly lighter dark blue for the drag-and-drop box
+secondaryBackgroundColor = "#1e293b"
+
+# Crisp white text
+textColor = "#f8fafc"
+
+# Modern font
+font = "sans serif"
