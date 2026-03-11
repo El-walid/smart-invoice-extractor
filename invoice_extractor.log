@@ -1,0 +1,41 @@
+2026-03-11 10:54:33,044 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 10:54:33,587 [CRITICAL] Failed to connect to Database: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'invoice-srv' requested by the login. Client with IP address '41.250.173.158' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'invoice-srv' requested by the login. Client with IP address '41.250.173.158' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615)")
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-03-11 10:57:31,480 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 10:58:59,166 [INFO] Received file upload: complex_invoice.pdf
+2026-03-11 10:58:59,628 [ERROR] Failed to process complex_invoice.pdf: (pyodbc.IntegrityError) ('23000', "[23000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Violation of UNIQUE KEY constraint 'UQ__Invoices__8081A63AF220F020'. Cannot insert duplicate key in object 'dbo.Invoices'. The duplicate key value is (#INV-2026-FURN). (2627) (SQLExecDirectW); [23000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]The statement has been terminated. (3621)")
+[SQL: INSERT INTO [Invoices] (client_id, invoice_number, date, total_ttc) OUTPUT inserted.id VALUES (?, ?, ?, ?)]
+[parameters: (1, '#INV-2026-FURN', datetime.datetime(2026, 2, 26, 0, 0), 52920.0)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-03-11 11:04:13,384 [INFO] Received file upload: complex_invoice (1).pdf
+2026-03-11 11:04:15,445 [INFO] Successfully processed Invoice ##INV-2026-LUME for client Villa Oasis Properties Route d'Amizmiz, Km 7
+2026-03-11 11:06:33,173 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:06:42,378 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:06:47,495 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:06:56,185 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:17,728 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:22,103 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:32,333 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:39,456 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:46,449 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:07:55,291 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:04,650 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:07,985 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:22,255 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:34,347 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:41,085 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:46,051 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:52,373 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:08:58,573 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:09:07,723 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:09:15,823 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:09:20,220 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:09:24,535 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:09:31,711 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:37:04,145 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:40:46,870 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:41:36,504 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:41:52,794 [ERROR] Failed to fetch history: 'method' object is not iterable
+2026-03-11 11:43:26,531 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 11:43:40,403 [ERROR] Failed to fetch history: 'datetime.date' object has no attribute 'isformat'
+2026-03-11 11:44:07,659 [INFO] Successfully connected to Azure SQL Database.

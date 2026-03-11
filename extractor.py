@@ -123,3 +123,38 @@ async def extract_invoice(file: UploadFile = File(...)):
     finally:
         # Always close the connection
         db.close()
+
+    
+@app.get("/history")
+async def get_invoice_history():
+
+    #Open database connection
+    db: Session = SessionLocal()
+
+    try:
+        # 2. THE JOIN QUERY
+        results = db.query(Invoice,Client)\
+                    .join(Client, Invoice.client_id == Client.id)\
+                    .order_by(Invoice.date.desc())\
+                    .all() # <--- FIX 1: Added parentheses
+            
+        #Format the Json
+        history_data = []
+
+        for inv,client in results:
+            history_data.append({
+                "Date": inv.date.isoformat(), # <--- FIX 2: Fixed spelling
+                "Invoice Id": inv.invoice_number,
+                "Client Name": client.company_name,
+                "Total Amount (TTC)": f"{inv.total_ttc:,.2f} Dh",
+                "Status": "Processed"
+            })
+            
+        return {"history": history_data}
+        
+    except Exception as ex:
+        logger.error(f"Failed to fetch history: {str(ex)}")
+        return {"error": "Could not fetch history from the database."}
+    finally:
+        #4. SAFETY FIRST
+        db.close()
