@@ -39,3 +39,7 @@
 2026-03-11 11:43:26,531 [INFO] Successfully connected to Azure SQL Database.
 2026-03-11 11:43:40,403 [ERROR] Failed to fetch history: 'datetime.date' object has no attribute 'isformat'
 2026-03-11 11:44:07,659 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 12:51:35,937 [INFO] Successfully connected to Azure SQL Database.
+2026-03-11 12:51:36,536 [CRITICAL] Failed to connect to Database: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'invoice-srv' requested by the login. Client with IP address '197.147.67.150' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615) (SQLDriverConnect); [42000] [Microsoft][ODBC Driver 18 for SQL Server][SQL Server]Cannot open server 'invoice-srv' requested by the login. Client with IP address '197.147.67.150' is not allowed to access the server.  To enable access, use the Azure Management Portal or run sp_set_firewall_rule on the master database to create a firewall rule for this IP address or address range.  It may take up to five minutes for this change to take effect. (40615)")
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-03-11 12:56:27,543 [INFO] Successfully connected to Azure SQL Database.
