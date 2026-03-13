@@ -1,0 +1,23 @@
+services:
+  # --- THE BACKEND (FastAPI + Azure SQL) ---
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+  # --- THE FRONTEND (Streamlit) ---
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      # This points to the service name "api" above!
+      - API_URL=http://api:8000 
+    depends_on:
+      - api # Tells Docker to start the backend before the frontend
