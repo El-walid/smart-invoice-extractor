@@ -35,11 +35,11 @@ class Invoice(Base):
     __tablename__ = "Invoices"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    client_id = Column(Integer, ForeignKey("Clients.id"), nullable=False)
-
+    # ADDED ONDELETE HERE
+    client_id = Column(Integer, ForeignKey("Clients.id", ondelete="CASCADE"), nullable=False)
     client = relationship("Client")
-
-    invoice_number = Column(String(100), unique=True,nullable=False)
+    
+    invoice_number = Column(String(100), unique=True, nullable=False)
     date = Column(Date, nullable=False)
     total_ttc = Column(Float, default=0.0)
 
@@ -47,13 +47,15 @@ class Invoice_Item(Base):
     __tablename__ = "Invoice_Items"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice_id = Column(Integer, ForeignKey("Invoices.id"), nullable=False)
+    # ADDED ONDELETE HERE
+    invoice_id = Column(Integer, ForeignKey("Invoices.id", ondelete="CASCADE"), nullable=False)
     invoice = relationship("Invoice")
 
     product_id = Column(Integer, ForeignKey("Products.id"), nullable=False)
     product = relationship("Product")
     quantity = Column(Integer, default=0)
-    
+
+
 # --- CONNECTION TO DATABASE ---
 
 try:

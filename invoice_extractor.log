@@ -53,3 +53,8 @@
 2026-03-11 13:09:35,434 [INFO] Successfully connected to Azure SQL Database.
 2026-03-11 13:09:55,738 [INFO] Successfully connected to Azure SQL Database.
 2026-03-13 23:38:09,786 [INFO] Successfully connected to Azure SQL Database.
+2026-03-14 22:59:54,804 [INFO] Successfully connected to Azure SQL Database.
+2026-03-14 23:02:50,982 [INFO] Successfully connected to Azure SQL Database.
+2026-03-14 23:07:22,812 [INFO] Successfully connected to Azure SQL Database.
+2026-03-14 23:11:51,147 [INFO] Received file upload: -CONS-721.pdf
+2026-03-14 23:11:52,367 [INFO] Successfully processed Invoice ##INV-2026-CONS-721 for client Atlas Cloud Services

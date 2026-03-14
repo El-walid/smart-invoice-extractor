@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import FastAPI, File, UploadFile
 from sqlalchemy.orm import Session
 from database import SessionLocal, Client, Product, Invoice, Invoice_Item
-from logger import logger  # <--- NEW IMPORT
+from logger import logger 
 
 app = FastAPI()
 
@@ -37,9 +37,13 @@ async def extract_invoice(file: UploadFile = File(...)):
         ice_num = re.search(r"ICE:\s*(\d+)", raw_text).group(1)
         date_str = re.search(r"Date:\s*([A-Za-z]+\s\d{1,2},\s\d{4})", raw_text).group(1)
         
-        # Grab the string right after "Billed To:"
-        client_match = re.search(r"Billed To:\s*\n?(.*?)\n", raw_text)
-        client_name = client_match.group(1).strip() if client_match else "Unknown Client"
+        # 1. Grab the Client Name
+        name_match = re.search(r"Name:\s*(.+)", raw_text)
+        client_name = name_match.group(1).strip() if name_match else "Unknown Client"
+
+        # 2. Grab the Address
+        address_match = re.search(r"Address:\s*(.+)", raw_text)
+        client_address = address_match.group(1).strip() if address_match else "Unknown Address"
 
         # Grab the total, remove the comma, convert to float
         total_ttc_str = re.search(r"Total Amount Payable \(TTC\):\s*([\d,]+)", raw_text).group(1)
@@ -60,7 +64,7 @@ async def extract_invoice(file: UploadFile = File(...)):
         # Check if ICE already exists. If not, create them.
         client = db.query(Client).filter(Client.ice_number == ice_num).first()
         if not client:
-            client = Client(company_name=client_name, address="Marrakech", ice_number=ice_num)
+            client = Client(company_name=client_name, address=client_address, ice_number=ice_num)
             db.add(client)
             db.flush() # Saves to DB temporarily to generate the new Client ID
             
@@ -136,14 +140,14 @@ async def get_invoice_history():
         results = db.query(Invoice,Client)\
                     .join(Client, Invoice.client_id == Client.id)\
                     .order_by(Invoice.date.desc())\
-                    .all() # <--- FIX 1: Added parentheses
+                    .all() 
             
         #Format the Json
         history_data = []
 
         for inv,client in results:
             history_data.append({
-                "Date": inv.date.isoformat(), # <--- FIX 2: Fixed spelling
+                "Date": inv.date.isoformat(), 
                 "Invoice Id": inv.invoice_number,
                 "Client Name": client.company_name,
                 "Total Amount (TTC)": f"{inv.total_ttc:,.2f} Dh",
@@ -156,5 +160,5 @@ async def get_invoice_history():
         logger.error(f"Failed to fetch history: {str(ex)}")
         return {"error": "Could not fetch history from the database."}
     finally:
-        #4. SAFETY FIRST
+        #3. SAFETY FIRST
         db.close()
