@@ -90,5 +90,3 @@ docker compose up --build
 **El Walid El Alaoui Fels** *Data Engineer | Cloud Architect*
 
 Specializing in the Azure Data Platform, DevOps orchestration, and automated Python ETL pipelines. Based in Marrakech, Morocco, and actively taking on projects to help businesses modernize and automate their data infrastructure.
-
-```
