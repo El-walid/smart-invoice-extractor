@@ -68,8 +68,6 @@ The Azure SQL database utilizes a fully normalized relational schema designed fo
    git clone [https://github.com/El-walid/smart-invoice-extractor.git](https://github.com/El-walid/smart-invoice-extractor.git)
    cd invoice-extractor
 
-```
-
 2. Build and launch the container network:
 ```bash
 docker compose up --build
