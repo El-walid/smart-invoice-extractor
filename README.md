@@ -1,4 +1,3 @@
-```markdown
 # 🧾 Smart Invoice Extractor (SmartExtract)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python&logoColor=white)
