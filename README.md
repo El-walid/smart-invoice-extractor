@@ -33,6 +33,7 @@ This B2B SaaS tool ingests raw PDF invoices, extracts structured data using high
 ![Interactive Web Dashboard](images/fastapi.png)
 ### 3. Containerized Architecture (Docker)
 *The entire application runs in isolated containers communicating over a private Docker network, independent of the host OS.*
+
 ![Docker Container](images/dockercontainer.png)
 > ---
 
