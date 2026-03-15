@@ -27,9 +27,11 @@ This B2B SaaS tool ingests raw PDF invoices, extracts structured data using high
 
 ### 1. Interactive Web Dashboard (Streamlit)
 *Users simply drag and drop PDF invoices. The system instantly processes the document, displays key metrics, and provides a fully auditable history tab.*
+
 ![Interactive Web Dashboard](images/UI.png)
 ### 2. Auto-Generated API Documentation (c)
 *The backend provides fully documented, asynchronous REST endpoints (`POST /extract_and_save` and `GET /history`) for seamless integration with external software.*
+
 ![Interactive Web Dashboard](images/fastapi.png)
 ### 3. Containerized Architecture (Docker)
 *The entire application runs in isolated containers communicating over a private Docker network, independent of the host OS.*
