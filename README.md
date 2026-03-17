@@ -93,13 +93,6 @@ This application is designed to be deployed to a cloud server for production use
    sudo docker compose up -d --build
    ```
 
-
-3. Access the application:
-* **Web UI:** [http://localhost:8501](https://www.google.com/search?q=http://localhost:8501)
-* **API Docs:** [http://localhost:8000/docs](https://www.google.com/search?q=http://localhost:8000/docs)
-
-
-
 ---
 
 ## 👤 About the Author
