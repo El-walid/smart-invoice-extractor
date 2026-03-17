@@ -101,5 +101,5 @@ This application is designed to be deployed to a cloud server for production use
 
 Specializing in the Azure Data Platform, DevOps orchestration, and automated Python ETL pipelines. Based in Marrakech, Morocco, and actively taking on projects to help businesses modernize and automate their data infrastructure.
 
-
-LinkedIn (https://www.linkedin.com/in/el-walid-el-alaoui-fels-51491538b/)
+[LinkedIn Profile](https://www.linkedin.com/in/el-walid-el-alaoui-fels-51491538b/)
+[Upwork](https://www.linkedin.com/in/el-walid-el-alaoui-fels-51491538b/)
