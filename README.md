@@ -79,6 +79,21 @@ docker compose up --build
 ```
 
 
+## ☁️ Cloud Deployment (Azure VM)
+
+This application is designed to be deployed to a cloud server for production use.
+1. Provision an **Ubuntu 22.04 VM** on Azure.
+2. Configure the **Network Security Group (NSG)** to allow inbound TCP traffic on port `8501`.
+3. SSH into the server and install the Docker engine:
+   ```bash
+   sudo apt update && sudo apt install docker.io docker-compose-v2 git -y
+   ```
+4. Clone the repository, manually create the `.env` file with your secure database credentials, and launch the detached container network:
+   ```bash
+   sudo docker compose up -d --build
+   ```
+
+
 3. Access the application:
 * **Web UI:** [http://localhost:8501](https://www.google.com/search?q=http://localhost:8501)
 * **API Docs:** [http://localhost:8000/docs](https://www.google.com/search?q=http://localhost:8000/docs)
