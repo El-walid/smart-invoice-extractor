@@ -20,6 +20,7 @@ This B2B SaaS tool ingests raw PDF invoices, extracts structured data using high
 * **Asynchronous REST API:** Powered by FastAPI for high-performance, concurrent data processing.
 * **Interactive Dashboard:** A sleek, responsive Streamlit web interface featuring drag-and-drop uploads and real-time history auditing via Pandas dataframes.
 * **DevOps Ready:** Orchestrated with Docker Compose for guaranteed consistency across local and production environments, utilizing isolated internal container networking.
+* **Cloud-Native Deployment:** Hosted on an Azure Ubuntu VM, orchestrated with Docker Compose for 24/7 availability and isolated internal container networking.
 
 ---
 
