@@ -9,6 +9,7 @@
 
 ## 📌 Executive Summary
 An automated, end-to-end Data Engineering pipeline designed to eliminate hours of manual data entry for logistics companies and manufacturing facilities. 
+
 This B2B SaaS tool ingests raw PDF invoices, extracts structured data using high-fidelity parsing, and seamlessly synchronizes the data to a normalized, enterprise-grade Azure SQL Database. The system is built on a modern, fully containerized microservices architecture.
 
 ---
